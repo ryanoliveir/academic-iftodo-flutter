@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:todo_app/components/todo_list.dart';
 import 'package:todo_app/components/dialog.dart';
+import 'package:todo_app/data/database.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -12,35 +14,46 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+
+  final _tasks = Hive.box('tasks');
+
+  TasksDatabase db = TasksDatabase();
   final _taskNameController = TextEditingController();
 
 
-  List todoList = [
-    ["Task 1", false],
-    ["Task 2", false],
-  ];
-
+  @override
+  void initState() {
+    if (_tasks.get("TASKSLIST") == null) {
+      db.createInitalTask();
+    } else {
+      db.loadData();
+    }
+    super.initState();
+  }
 
   void checkBoxChanged(bool? value, int index){
     setState(() {
-      todoList[index][1] = !todoList[index][1];
+      db.toDoList[index][1] = !db.toDoList[index][1];
       
     });
+    db.update();
     
   }
 
   void saveTask(){
     setState(() {
-        todoList.add([_taskNameController.text, false]);
+        db.toDoList.add([_taskNameController.text, false]);
     });
+    db.update();
     _taskNameController.text = "";
     Navigator.of(context).pop();
   }
 
   void deleteTask(int index){
     setState(() {
-      todoList.removeAt(index);
+      db.toDoList.removeAt(index);
     });
+    db.update();
   }
 
   void createNewTask(){
@@ -72,11 +85,11 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
         ),
       body: ListView.builder(
-        itemCount: todoList.length,
+        itemCount: db.toDoList.length,
         itemBuilder: (context, index) {
           return TodoList(
-            taskName: todoList[index][0], 
-            taskCompleted: todoList[index][1], 
+            taskName: db.toDoList[index][0], 
+            taskCompleted: db.toDoList[index][1], 
             removeTask: (context) => deleteTask(index),
             onChanged: (value) => checkBoxChanged(value, index));
         }
