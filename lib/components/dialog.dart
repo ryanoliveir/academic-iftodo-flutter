@@ -20,10 +20,11 @@ class DialogForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return  
       AlertDialog(
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.green[400],
         content: SizedBox (
-            height: 120,
+            height: 140,
             child:  Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Name of task
                  TextField(
@@ -36,6 +37,7 @@ class DialogForm extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ButtonCustom(text: "Save" , onPressed: onSave),
                     const SizedBox(width: 4),
@@ -50,7 +52,7 @@ class DialogForm extends StatelessWidget {
           
         ),
 
-        title: const Text('New task')
+        title: const Text('New task', style: TextStyle(color: Colors.white),)
       );
   }
 }

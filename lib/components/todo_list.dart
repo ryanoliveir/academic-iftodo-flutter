@@ -6,16 +6,16 @@ class TodoList extends StatelessWidget {
   final String taskName;
   final bool taskCompleted;
 
-  Function(bool?)? onChanged;
-  Function(BuildContext?)? removeTask;
+  final Function(bool?)? onChanged;
+  final Function(BuildContext?)? removeTask;
 
-    TodoList({
-      required this.taskName,
-      required this.taskCompleted,
-      required this.onChanged,
-      required this.removeTask,
-      super.key,
-    });
+  const TodoList({
+    required this.taskName,
+    required this.taskCompleted,
+    required this.onChanged,
+    required this.removeTask,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class TodoList extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-              color: Colors.yellow,
+              color: Colors.green[500],
               borderRadius: BorderRadius.circular(12)
             ),
           child: Row(
@@ -52,7 +52,9 @@ class TodoList extends StatelessWidget {
               Text(
                 taskName,
                 style: TextStyle(
-                  decoration: taskCompleted? TextDecoration.lineThrough : TextDecoration.none
+                  decoration: taskCompleted? TextDecoration.lineThrough : TextDecoration.none,
+                  fontSize: 14,
+                  color: Colors.white
                 ),
               )
               
